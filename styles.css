@@ -1,0 +1,16 @@
+@font-face {
+    font-family: 'NebulaSans-Black'; /*a name to be used later*/
+    src: url('NebulaSans-Black.ttf'); /*URL to font*/
+}
+
+@font-face {
+    font-family: 'NebulaSans-Book'; /*a name to be used later*/
+    src: url('NebulaSans-Book.ttf'); /*URL to font*/
+}
+
+
+:root {
+  --bulma-family-primary: NebulaSans-Black;
+  --bulma-family-secondary: NebulaSans-Book;
+}
+
