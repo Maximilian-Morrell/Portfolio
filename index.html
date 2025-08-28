@@ -5,14 +5,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Maximilian Morrell: Über Mich</title>
-    <link rel="stylesheet" href="../CSS/bulma.min.css">
-    <link rel="stylesheet" href="../CSS/styles.css">
-    <link rel="icon" type="image/png" href="../favicon-32x32.png">
+    <link rel="stylesheet" href="CSS/bulma.min.css">
+    <link rel="stylesheet" href="CSS/styles.css">
+    <link rel="icon" type="image/png" href="favicon-32x32.png">
+    <script src="menubar.js"></script>
 </head>
 
 <body>
     <header>
-        <nav class="navbar" role="navigation" aria-label="main navigation">
+        <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <a class="navbar-item" href="http://max.morrell.at">
                     <div class="block">
@@ -23,12 +24,36 @@
 
 
             </div>
-
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false"
+                data-target="navbarBasicExample">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+            </div>
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-end">
-                    <a class="navbar-item" href="index.html">
-                        Über mich
-                    </a>
+                    <div class="navbar-item has dropdown is-hoverable">
+                        <a class="navbar-link is-arrowless" href="/">
+                            Über mich
+                        </a>
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item" href="#Schule">
+                                Schule
+                            </a>
+                            <a class="navbar-item">
+                                Australien
+                            </a>
+                            <a class="navbar-item">
+                                Kitzbühel
+                            </a>
+                            <a class="navbar-item">
+                                Freeride World Tour
+                            </a>
+                        </div>
+                    </div>
+
 
                     <div class="navbar-item has dropdown is-hoverable">
                         <a class="navbar-link is-arrowless" href="impressum/index.html">
@@ -52,7 +77,7 @@
                     <a class="navbar-item">
                         Coding
                     </a>
-                    <a class="navbar-item" href="impressum/index.html">
+                    <a class="navbar-item" href="impressum/">
                         Impressum
                     </a>
                 </div>
@@ -64,14 +89,14 @@
         <div class="container">
             <div class="columns is-vcentered">
                 <!-- Profilbild -->
-                <div class="column is-one-third has-text-centered">
-                    <figure class="image  is-inline-block">
-                        <img class="is-rounded" src="../2IT_Morell_Maximilian.jpg" alt="Profilbild">
+                <div class="column is-one-third has-text-centered m-6">
+                    <figure class="image is-inline-block">
+                        <img class="is-rounded" src="2IT_Morell_Maximilian.jpg" alt="Profilbild">
                     </figure>
                 </div>
                 <!-- Text -->
-                <div class="column">
-                    <div class="content box">
+                <div class="column m-6">
+                    <div class="content">
                         <h2 class="subtitle">Über Mich</h2>
                         <p>
                             Ich bin <strong>Maximilian Morrell</strong> und besuche derzeit die DigBiz (IT) <a
@@ -145,6 +170,22 @@
                     </div>
                 </div>
             </div>
+    </section>
+    <section class="hero">
+        <div class="hero-body">
+            <h1 id="Schule" class="title is-size-1">Schule</h1>
+            <p class="subtitle is-size-4">Volksschule Reith bei Kitzbühel (2014-2018)</p>
+            <p class="">Ich begann meine Schulische Ausbildung 2014 in der Volksschule Reith bei Kitzbühel,
+                welche ich nach 4 Jahren erfolgreich abschlies.</p>
+            <br>
+            <p class="subtitle is-size-4">Mittelschule Kitzbühel (2018-2022)</p>
+            <p class="content">Von 2018 bis 2022 absolvierte ich die Mittelschule Kitzbühel mit Informatik Schwerpunkt wo ich auch den ECDL im Rahmen von dem Freifach Informatik</p>
+            <br>
+            <p class="subtitle is-size-4">Handelsakademie Digital Business Kitzbühel (2022-2027)</p>
+            <p class="content">Seit 2022 bin ich an der DigBiz (IT) Handelsakademie Kitzbühel, welche mir nicht nur eine erstklassige Kaufmännische sondern auch Informatik Ausbildung bietet.</p>
+            <h1 id="Beruf" class="title is-size-1">Beruf</h1>
+            <p class="subtitle is-size-4">Stadtgemeinde Kitzbühel</p>
+            <p class="content">Im Sommer 2023 kamm ich in mein erstes Arbeitsverhältniss. Ich durfte in Rahmen meines Pflichtpraktikumes bei der Arbeit des Archives und des Museums mithelfen. Ich habe über die Wichtigkeit des richtigen Umganges mit dem Archivmaterial, der Wichtigkeit von sauberer Katalogisierung und über Kitzbühel lernen dürfen.</p>
         </div>
     </section>
 </body>
