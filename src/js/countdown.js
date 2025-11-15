@@ -1,39 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const url = "https://raw.githubusercontent.com/Maximilian-Morrell/Portfolio/Dev/data.json";
-
-  fetch(url)
-    .then(res => res.json())
-    .then(data => {
-      const container = document.getElementById("countdown-container");
-
-      data.forEach(item => {
-        const box = document.createElement("div");
-        box.classList.add("box");
-
-        box.innerHTML = `
-          <h1 class="title is-centered is-size-1 has-text-centered">${item.title}</h1>
-          <div class="content">
-            <p class="countdown subtitle is-size-2 has-text-centered"
-               data-target="${item.target}"
-               data-finished="${item.finished}">
-            </p>
-            <div class="progress-container">
-              <progress class="progress" value="0" max="100"></progress>
-              <span class="progress-text">0%</span>
-            </div>
-          </div>
-        `;
-
-        container.appendChild(box);
-      });
-
-      updateCountdowns();               // first render
-      setInterval(updateCountdowns, 1000); // update every second
-    })
-    .catch(err => console.error("JSON load error:", err));
-});
-
-
 const startDate = new Date(2025, 10, 2, 12, 0, 0); // October = 9
 const decimalPlaces = 2;
 
@@ -144,7 +108,7 @@ function updateCountdowns() {
     ];
 
     // Initialize units if not exists
-    if (!cd.hasChildNodes()) {
+    if (cd.childNodes[1] == undefined) {
       cd.innerHTML = "";
       units.forEach(u => cd.appendChild(wrapUnit(u)));
     }
@@ -165,6 +129,43 @@ function updateCountdowns() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  updateCountdowns();
-  setInterval(updateCountdowns, 1000);
+  const url = "https://raw.githubusercontent.com/Maximilian-Morrell/Portfolio/refs/heads/Dev/data.json";
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById("countdown-container");
+
+      data.forEach(item => {
+        const box = document.createElement("div");
+        box.classList.add("box");
+
+        let date = new Date(item.target)
+        const pad = n => String(n).padStart(2, "0");
+
+        const visualDate =
+          `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()}  ` +
+          `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+
+        box.innerHTML = `
+          <h1 class="title is-centered is-size-1 has-text-centered">${item.title}</h1>
+          <h1 class="subtitle is-centered is-size-1 has-text-centered">${visualDate}</h1>
+          <div class="content">
+            <p class="countdown subtitle is-size-2 has-text-centered"
+               data-target="${item.target}"
+               data-finished="${item.finished}">Loading</p>
+            <div class="progress-container">
+              <progress class="progress" value="0" max="100"></progress>
+              <span class="progress-text">0%</span>
+            </div>
+          </div>
+        `;
+
+        container.appendChild(box);
+      });
+
+      updateCountdowns();               // first render
+      setInterval(updateCountdowns, 1000); // update every second
+    })
+    .catch(err => console.error("JSON load error:", err));
 });
