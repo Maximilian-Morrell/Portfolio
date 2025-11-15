@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         box.innerHTML = `
           <h1 class="title is-centered is-size-1 has-text-centered">${item.title}</h1>
-          <h1 class="subtitle is-centered is-size-1 has-text-centered">${visualDate}</h1>
+          <h1 class="pt-1 subtitle is-centered is-size-3 has-text-centered">${visualDate}</h1>
           <div class="content">
             <p class="countdown subtitle is-size-2 has-text-centered"
                data-target="${item.target}"
@@ -173,7 +173,8 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if(oldCOntainer.children.length == 0) {
-        document.getElementById("Seperator-Old-Countown").style.visibility = "hidden"
+        document.getElementById("Seperator-Old-Countown").style.display = "none"
+        oldCOntainer.style.display = "none"
       }
 
       updateCountdowns();               // first render
