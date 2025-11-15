@@ -49,3 +49,93 @@
   text-shadow: none;
 }
 
+/* Countdown container */
+.countdown {
+  display: flex;
+  justify-content: center;
+  font-weight: bold;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 2rem;
+  align-items: baseline;
+}
+
+/* Each unit (number + label inline) */
+.countdown span.unit {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  color: inherit; /* inherit from countdown container */
+}
+
+/* Digits */
+.countdown span.unit .digit {
+  display: inline-block;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  font-size: inherit;
+  line-height: 1;
+}
+
+/* Unit label text */
+.countdown span.unit .label {
+  font-size: inherit;
+  font-weight: normal;
+  line-height: 1;
+  color: inherit
+}
+
+
+/* Bounce animation for changing numbers */
+@keyframes bounceIn {
+  0% {
+    transform: translateY(-50%) scale(0.5);
+  }
+  50% {
+    transform: translateY(10%) scale(1.2);
+  }
+  80% {
+    transform: translateY(-5%) scale(0.95);
+  }
+  100% {
+    transform: translateY(0%) scale(1);
+  }
+}
+
+.countdown span.unit .digit.bounce {
+  animation: bounceIn 0.5s forwards;
+}
+
+/* Progress bar container */
+.progress-container {
+  position: relative;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.progress-container progress {
+  width: 100%;
+  height: 1.5rem;
+  border-radius: 6px;
+  transition: all 0.5s ease;
+}
+
+.progress-text {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.progress.is-warning + .progress-text,
+.progress.is-danger + .progress-text {
+  color: black;
+  text-shadow: none;
+}

@@ -1,80 +1,130 @@
-function pad(number) {
-  return number.toString().padStart(2, "0");
-}
-
-function parseLocalTarget(value) {
-  const m = value.match(
-    /^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2})(?::(\d{2}))?)?$/
-  );
-  if (m) {
-    const [, y, M, d, h = "0", min = "0", s = "0"] = m;
-    return new Date(
-      Number(y),
-      Number(M) - 1,
-      Number(d),
-      Number(h),
-      Number(min),
-      Number(s)
-    );
-  }
-  return new Date(value);
-}
-
-// 🕛 Start date: 02.11.2025 12:00
-const startDate = new Date(2025, 10, 2, 12, 0, 0);
-
-// ⚙️ Adjustable decimal precision for percentage
-const decimalPlaces = 2; // ← change this to 0, 1, 2, etc.
+const startDate = new Date(2025, 10, 2, 12, 0, 0); // October = 9
+const decimalPlaces = 2;
 
 function getProgressColor(percent) {
-  if (percent < 25) return "is-info";       // blue
-  if (percent < 50) return "is-success";    // green
-  if (percent < 75) return "is-warning";    // yellow
-  return "is-danger";                       // red
+  if (percent < 25) return "is-danger";
+  if (percent < 50) return "is-warning";
+  if (percent < 75) return "is-link";
+  return "is-link";
 }
+
+function bounceDigit(span, newDigit) {
+  if (span.textContent !== newDigit) {
+    span.textContent = newDigit;
+    span.classList.add("bounce");
+    setTimeout(() => span.classList.remove("bounce"), 500);
+  }
+}
+
+function wrapUnit(labelObj) {
+  const unit = document.createElement("span");
+  unit.classList.add("unit");
+  unit.style.display = "inline-flex"; // keep units in a line
+
+  // placeholder digit
+  const span = document.createElement("span");
+  span.classList.add("digit");
+  span.textContent = "0";
+  unit.appendChild(span);
+
+  const spanLabel = document.createElement("span");
+  spanLabel.classList.add("label");
+  spanLabel.textContent = labelObj.plural;
+  unit.appendChild(spanLabel);
+
+  return unit;
+}
+
+function updateUnitDigits(unitEl, value, labelObj, isFirstVisible) {
+  const digits = unitEl.querySelectorAll(".digit");
+  const valStr = isFirstVisible ? value.toString() : value.toString().padStart(2, "0");
+
+  // Ensure each character has a span
+  if (digits.length !== valStr.length) {
+    // Clear old digits
+    digits.forEach(d => d.remove());
+    // Add new digit spans
+    valStr.split("").forEach(d => {
+      const span = document.createElement("span");
+      span.classList.add("digit");
+      span.textContent = d;
+      unitEl.insertBefore(span, unitEl.querySelector(".label"));
+      // Add bounce animation
+      span.classList.add("bounce");
+      setTimeout(() => span.classList.remove("bounce"), 500);
+    });
+  } else {
+    // Update existing digits with bounce
+    valStr.split("").forEach((d, i) => bounceDigit(digits[i], d));
+  }
+
+  // Update label
+  const spanLabel = unitEl.querySelector(".label");
+  spanLabel.textContent = value === 1 ? labelObj.singular : labelObj.plural;
+}
+
 
 function updateCountdowns() {
   const countdowns = document.querySelectorAll(".countdown");
   const now = Date.now();
 
-  countdowns.forEach(countdown => {
-    const target = parseLocalTarget(countdown.dataset.target);
-    const distance = target - now;
-    const container = countdown.nextElementSibling;
+  countdowns.forEach(cd => {
+    const target = new Date(cd.dataset.target);
+    let distance = target - now;
+
+    const container = cd.nextElementSibling;
     const progress = container.querySelector("progress");
     const progressText = container.querySelector(".progress-text");
 
     if (distance <= 0) {
-      countdown.textContent = "Countdown finished!";
+      const finishedMessage = cd.dataset.finished || "Countdown finished!";
+      cd.innerHTML = finishedMessage; // display your message
+
       progress.value = 100;
-      progress.className = "progress is-danger";
+      progress.className = "progress is-success";
       progressText.textContent = "100%";
       return;
     }
 
-    // Calculate progress
+    // Progress
     const totalDuration = target - startDate;
     const elapsed = now - startDate;
     const percent = Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100);
-
-    // Apply settings
     progress.value = percent;
     progress.className = "progress " + getProgressColor(percent);
     progressText.textContent = percent.toFixed(decimalPlaces) + "%";
 
-    // Countdown display
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    // Time breakdown
+    let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    let parts = [];
-    if (days > 0) parts.push(`${days} Day${days > 1 ? 's' : ''}`);
-    if (hours > 0 || days > 0) parts.push(`${pad(hours)} Hour${hours !== 1 ? 's' : ''}`);
-    if (minutes > 0 || hours > 0 || days > 0) parts.push(`${pad(minutes)} Minute${minutes !== 1 ? 's' : ''}`);
-    parts.push(`${pad(seconds)} Second${seconds !== 1 ? 's' : ''}`);
+    const units = [
+      { value: days, singular: "Day", plural: "Days" },
+      { value: hours, singular: "Hour", plural: "Hours" },
+      { value: minutes, singular: "Minute", plural: "Minutes" },
+      { value: seconds, singular: "Second", plural: "Seconds" },
+    ];
 
-    countdown.textContent = parts.join(' ');
+    // Initialize units if not exists
+    if (!cd.hasChildNodes()) {
+      cd.innerHTML = "";
+      units.forEach(u => cd.appendChild(wrapUnit(u)));
+    }
+
+    const unitEls = cd.querySelectorAll(".unit");
+
+    // Determine first visible unit index
+    let firstVisibleIndex = units.findIndex(u => u.value > 0);
+    if (firstVisibleIndex === -1) firstVisibleIndex = units.length - 1;
+
+    // Update each unit
+    units.forEach((u, i) => {
+      const isFirstVisible = i === firstVisibleIndex;
+      updateUnitDigits(unitEls[i], u.value, u, isFirstVisible);
+      unitEls[i].style.display = i < firstVisibleIndex ? "none" : "inline-flex";
+    });
   });
 }
 
