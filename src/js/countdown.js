@@ -164,7 +164,7 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
 
 
-        if(item.isfinished == true) {
+        if(item.isFinished) {
           oldCOntainer.appendChild(box)
         } else {
           newContainer.appendChild(box);
