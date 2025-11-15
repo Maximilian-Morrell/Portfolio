@@ -10,6 +10,76 @@
         "title": "Stranger Things 5 Vol 1",
         "target": "2025-11-27T02:00:00",
         "finished": "Stranger Things 5! The final Crawl has begun!",
-        "isFinished": true
+        "isFinished": false
+    },
+
+        {
+        "title": "Christmas",
+        "target": "2025-12-24T19:00:00",
+        "finished": "🎄 Merry Christmas! Let the celebrations begin!",
+        "isFinished": false
+    },
+
+    {
+        "title": "Stranger Things 5 Vol 2",
+        "target": "2025-12-26T02:00:00",
+        "finished": "Stranger things 5! The Bridge for the last fight got built!",
+        "isFinished": false
+    },
+
+    {
+        "title": "New Year",
+        "target": "2026-01-01T00:00:00",
+        "finished": "🎆 Happy New Year!",
+        "isFinished": false
+    },
+
+    {
+        "title": "Stranger Things 5 Finale",
+        "target": "2026-01-01T02:00:00",
+        "finished": "Stranger Things 5! The final fight for Hawkins has started!",
+        "isFinished": false
+    },
+
+    {
+        "title": "EPAS - Strasburg",
+        "target": "2026-02-25T07:30:00",
+        "finished": "EU I'm coming!",
+        "isFinished": false
+    },
+
+    {
+        "title": "Birthday",
+        "target": "2026-02-27T00:00:00",
+        "finished": "🎂 Happy Birthday!",
+        "isFinished": false
+    },
+
+    {
+        "title": "Ireland",
+        "target": "2026-03-29T20:30:00",
+        "finished": "Time for some irish beer!",
+        "isFinished": false
+    },
+
+    {
+        "title": "Ferien",
+        "target": "2026-07-11T10:00:00",
+        "finished": "🌴 Let the final Summer Holidays begin!",
+        "isFinished": false
+    },
+
+    {
+        "title": "Online Check-In: Australia",
+        "target": "2026-07-21T15:40:00",
+        "finished": "Checked-In: The Final Preparation",
+        "isFinished": false
+    },
+
+    {
+        "title": "Matura Anfang",
+        "target": "2027-05-05T07:30:00",
+        "finished": "🎓 Let the finals beginn!",
+        "isFinished": false
     }
 ]
