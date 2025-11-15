@@ -134,7 +134,8 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch(url)
     .then(res => res.json())
     .then(data => {
-      const container = document.getElementById("countdown-container");
+      const newContainer = document.getElementById("countdown-container");
+      const oldCOntainer = document.getElementById("old-countdown-container");
 
       data.forEach(item => {
 
@@ -162,9 +163,19 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
 
-        container.appendChild(box);
+        if(item.is-finished) {
+          oldCOntainer.appendChild(box)
+        }
+        else {
+          container.appendChild(box);
+        }
+
       });
 
+      if(oldCOntainer.children.length == 0) {
+        document.getElementById("Seperator-Old-Countown").style.visibility = "hidden"
+      }
+      
       updateCountdowns();               // first render
       setInterval(updateCountdowns, 1000); // update every second
     })
