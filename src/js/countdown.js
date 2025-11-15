@@ -129,7 +129,7 @@ function updateCountdowns() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const url = "https://raw.githubusercontent.com/Maximilian-Morrell/Portfolio/refs/heads/Dev/data.json";
+  const url = "https://max.morrell.at/data.json";
 
   fetch(url)
     .then(res => res.json())
