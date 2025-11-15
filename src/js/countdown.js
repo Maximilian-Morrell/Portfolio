@@ -163,11 +163,11 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         `;
 
-        if(item.is-finished) {
+
+        if(item.isfinished == true) {
           oldCOntainer.appendChild(box)
-        }
-        else {
-          container.appendChild(box);
+        } else {
+          newContainer.appendChild(box);
         }
 
       });
@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if(oldCOntainer.children.length == 0) {
         document.getElementById("Seperator-Old-Countown").style.visibility = "hidden"
       }
-      
+
       updateCountdowns();               // first render
       setInterval(updateCountdowns, 1000); // update every second
     })
