@@ -137,6 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const container = document.getElementById("countdown-container");
 
       data.forEach(item => {
+
         const box = document.createElement("div");
         box.classList.add("box");
 
