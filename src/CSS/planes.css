@@ -1,0 +1,27 @@
+/* fliegende Flugzeuge im Hintergrund */
+.plane {
+  position: absolute;
+  font-size: 24px;
+  user-select: none;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* Container für fliegende Flugzeuge */
+#plane-container {
+  position: fixed; /* bleibt hinter dem Content */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* verhindert Klicks auf die Flugzeuge */
+  overflow: hidden;
+  z-index: 0; /* hinter allem anderen */
+}
+
+.plane {
+  position: absolute;
+  font-size: 24px;
+  user-select: none;
+  will-change: transform;
+}

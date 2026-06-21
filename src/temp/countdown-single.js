@@ -1,53 +1,24 @@
 const decimalPlaces = 2;
 
-function updateLayoutMode() {
-  const isTouch =
-    window.matchMedia("(pointer: coarse)").matches &&
-    window.matchMedia("(hover: none)").matches;
-
-  if (isTouch) {
-    document.documentElement.classList.add("is-mobile");
-  } else {
-    document.documentElement.classList.remove("is-mobile");
-  }
-}
-
-updateLayoutMode();
-
-var firstEvent = false;
-
 document.addEventListener("DOMContentLoaded", () => {
-  const url = "https://max.morrell.at/data.json";
+  const params = new URLSearchParams(window.location.search);
+  const index = parseInt(params.get("id"), 10);
 
-  fetch(url)
+  if (isNaN(index)) return;
+
+  fetch("https://max.morrell.at/data.json")
     .then(res => res.json())
     .then(data => {
+      const item = data[index];
+      document.title = "Detail: " + item.title;
+      if (!item) return;
       const newContainer = document.getElementById("countdown-container");
-      const oldContainer = document.getElementById("old-countdown-container");
-
-      data.forEach((item, index) => {
-
-        if(!item.isHidden) {
-       const box = document.createElement("div");
+      const box = document.createElement("div");
         box.classList.add("box");
-        box.style.cursor = "pointer";
-
-        box.addEventListener("click", () => {
-          window.location.href = `/countdown/countdown.html?id=${index}`;
-        });
 
         const date = new Date(item.target);
         const startdate = new Date(item.start);
         const pad = n => String(n).padStart(2, "0");
-
-        const dateToolTip = new Date(item.start);
-
-        const formattedToolTp =
-            String(dateToolTip.getDate()).padStart(2, '0') + "." +
-            String(dateToolTip.getMonth() + 1).padStart(2, '0') + "." +
-            String(dateToolTip.getFullYear()).slice(-2) + " " +
-            String(dateToolTip.getHours()).padStart(2, '0') + ":" +
-            String(dateToolTip.getMinutes()).padStart(2, '0');
 
         const visualDate =
           `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()} ` +
@@ -58,47 +29,24 @@ document.addEventListener("DOMContentLoaded", () => {
           <h2 class="subtitle is-size-3 has-text-centered">${visualDate}</h2>
 
           <p class="countdown subtitle is-size-2 has-text-centered"
-            data-target="${item.target}"
-            data-start="${item.start}"
-            data-finished="${item.finished}"
-            data-is-count-up="${item.isCountUp}">
+             data-target="${item.target}"
+             data-start="${item.start}"
+             data-finished="${item.finished}">
             Loading
           </p>
 
-
           <div class="progress-container">
-            <span class="tooltiptext">${formattedToolTp}</span>
             <progress class="progress" value="0" max="100"></progress>
             <span class="progress-text">0%</span>
           </div>
         `;
 
-        if (item.isFinished) {
-          oldContainer.appendChild(box);
-        } else {
-        if(!firstEvent) {
-          const nextEventContainer = document.getElementById("nextEvent");
-          const date = new Date(item.target);
-          const pad = n => String(n).padStart(2, "0");
-          nextEventContainer.textContent = `Next Event: ${item.title} ${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
-          firstEvent = true;
-        }
-          newContainer.appendChild(box);
-        }
-      };
-    })
-
-      if (oldContainer.children.length === 0) {
-        document.getElementById("Seperator-Old-Countown").style.display = "none";
-        oldContainer.style.display = "none";
-      }
+      newContainer.appendChild(box);
 
       updateCountdowns();
       setInterval(updateCountdowns, 1000);
-    })
-    .catch(err => console.error("JSON load error:", err));
+    });
 });
-
 
 function getProgressColor(percent) {
   if (percent < 25) return "is-danger";
@@ -160,34 +108,19 @@ function updateUnitDigits(unitEl, value, labelObj, isFirstVisible) {
 }
 
 function updateCountdowns() {
-  const clock = document.getElementById("clock");
   const countdowns = document.querySelectorAll(".countdown");
   const now = Date.now();
-
-  // Update the clock
-  const currentTime = new Date(now);
-  clock.textContent = currentTime.toLocaleDateString() + " " + currentTime.toLocaleTimeString();
 
   countdowns.forEach(cd => {
     const target = new Date(cd.dataset.target);
     const start = new Date(cd.dataset.start);
-    const isOver = now >= target;
-    const isCountUp = cd.dataset.isCountUp === "true"; // read from dataset
-
-    let distance = isCountUp && isOver ? now - target : target - now;
+    let distance = target - now;
 
     const container = cd.nextElementSibling;
     const progress = container.querySelector("progress");
     const progressText = container.querySelector(".progress-text");
 
-    // Hide progress bar if counting up
-    if (isCountUp) {
-      container.style.display = "none";
-    } else {
-      container.style.display = "block";
-    }
-
-    if (!isCountUp && distance <= 0) {
+    if (distance <= 0) {
       cd.innerHTML = cd.dataset.finished || "Countdown finished!";
       progress.value = 100;
       progress.className = "progress is-success";
@@ -197,22 +130,16 @@ function updateCountdowns() {
 
     const totalDuration = target - start;
     const elapsed = now - start;
-    const percent = isCountUp
-      ? 0
-      : Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100);
+    const percent = Math.min(Math.max((elapsed / totalDuration) * 100, 0), 100);
 
-    if (!isCountUp) {
-      progress.value = percent;
-      progress.className = "progress " + getProgressColor(percent);
-      progressText.textContent = percent.toFixed(decimalPlaces) + "%";
-    }
+    progress.value = percent;
+    progress.className = "progress " + getProgressColor(percent);
+    progressText.textContent = percent.toFixed(decimalPlaces) + "%";
 
     let days = Math.floor(distance / (1000 * 60 * 60 * 24));
     let hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
     let minutes = Math.floor((distance / (1000 * 60)) % 60);
     let seconds = Math.floor((distance / 1000) % 60);
-
-    if (days < 0) days = hours = minutes = seconds = 0;
 
     const units = [
       { value: days, singular: "Day", plural: "Days" },
@@ -236,4 +163,3 @@ function updateCountdowns() {
     });
   });
 }
-

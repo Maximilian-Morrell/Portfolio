@@ -1,21 +1,5 @@
 const decimalPlaces = 2;
 
-function updateLayoutMode() {
-  const isTouch =
-    window.matchMedia("(pointer: coarse)").matches &&
-    window.matchMedia("(hover: none)").matches;
-
-  if (isTouch) {
-    document.documentElement.classList.add("is-mobile");
-  } else {
-    document.documentElement.classList.remove("is-mobile");
-  }
-}
-
-updateLayoutMode();
-
-var firstEvent = false;
-
 document.addEventListener("DOMContentLoaded", () => {
   const url = "https://max.morrell.at/data.json";
 
@@ -26,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const oldContainer = document.getElementById("old-countdown-container");
 
       data.forEach((item, index) => {
-
         if(!item.isHidden) {
        const box = document.createElement("div");
         box.classList.add("box");
@@ -39,15 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const date = new Date(item.target);
         const startdate = new Date(item.start);
         const pad = n => String(n).padStart(2, "0");
-
-        const dateToolTip = new Date(item.start);
-
-        const formattedToolTp =
-            String(dateToolTip.getDate()).padStart(2, '0') + "." +
-            String(dateToolTip.getMonth() + 1).padStart(2, '0') + "." +
-            String(dateToolTip.getFullYear()).slice(-2) + " " +
-            String(dateToolTip.getHours()).padStart(2, '0') + ":" +
-            String(dateToolTip.getMinutes()).padStart(2, '0');
 
         const visualDate =
           `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()} ` +
@@ -67,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
           <div class="progress-container">
-            <span class="tooltiptext">${formattedToolTp}</span>
             <progress class="progress" value="0" max="100"></progress>
             <span class="progress-text">0%</span>
           </div>
@@ -76,13 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
         if (item.isFinished) {
           oldContainer.appendChild(box);
         } else {
-        if(!firstEvent) {
-          const nextEventContainer = document.getElementById("nextEvent");
-          const date = new Date(item.target);
-          const pad = n => String(n).padStart(2, "0");
-          nextEventContainer.textContent = `Next Event: ${item.title} ${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
-          firstEvent = true;
-        }
           newContainer.appendChild(box);
         }
       };
@@ -160,13 +126,8 @@ function updateUnitDigits(unitEl, value, labelObj, isFirstVisible) {
 }
 
 function updateCountdowns() {
-  const clock = document.getElementById("clock");
   const countdowns = document.querySelectorAll(".countdown");
   const now = Date.now();
-
-  // Update the clock
-  const currentTime = new Date(now);
-  clock.textContent = currentTime.toLocaleDateString() + " " + currentTime.toLocaleTimeString();
 
   countdowns.forEach(cd => {
     const target = new Date(cd.dataset.target);

@@ -1,0 +1,39 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  justify-content: center;   /* horizontal centering */
+  align-items: center;       /* vertical centering */
+}
+
+#countdown-container {
+  text-align: center;
+  width: 100%;
+  transform: none;
+  padding: clamp(2rem, 5vw, 4rem);
+}
+
+#countdown-container .unit {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+}
+
+#countdown-container progress.progress {
+  height: clamp(0.9rem, 2.25vw, 1.5rem);
+}
+
+#countdown-container span.progress-text {
+  font-size: clamp(0.675rem, 1.6875vw, 1.125rem);
+}
+
+#countdown-container .title {
+  font-size: clamp(3rem, 7vw, 5rem);
+}
+
+#countdown-container .subtitle {
+  font-size: clamp(2rem, 5vw, 3rem);
+}
